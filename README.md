@@ -171,7 +171,7 @@ Open the browser → the top bar auto-detects whichever coding-agent CLI you alr
 ### Reverse-proxy subpath
 
 If you're serving the app behind a reverse proxy that exposes a subpath like
-`https://ssp.prod.boscharena.ai/lq-codeserver01/proxy/3000/` **and strips that prefix before forwarding to the Next server**, set `NEXT_PUBLIC_BASE_PATH` to the stripped prefix **without** a trailing slash:
+`https://ssp.prod.boscharena.ai/lq-codeserver01/proxy/3000/` **and strips that prefix before forwarding to the Next server**, set `NEXT_PUBLIC_BASE_PATH` to the stripped prefix (a trailing slash is fine; the app trims it automatically):
 
 ```bash
 NEXT_PUBLIC_BASE_PATH=/lq-codeserver01/proxy/3000 pnpm -F @html-anything/next dev

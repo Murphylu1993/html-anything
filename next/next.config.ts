@@ -1,9 +1,8 @@
 import type { NextConfig } from "next";
-
-const basePath = (process.env.NEXT_PUBLIC_BASE_PATH ?? "").replace(/\/$/, "");
+import { BASE_PATH } from "./src/lib/base-path";
 
 const nextConfig: NextConfig = {
-  assetPrefix: basePath || undefined,
+  assetPrefix: BASE_PATH || undefined,
 };
 
 export default nextConfig;
