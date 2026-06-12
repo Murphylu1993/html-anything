@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useRef, useState } from "react";
+import { withBasePath } from "./base-path";
 import { useStore } from "./store";
 
 type DraftReq = {
@@ -62,7 +63,7 @@ export function useDraft() {
     if (sep) store.setContent(before + sep);
 
     try {
-      const res = await fetch("/api/draft", {
+      const res = await fetch(withBasePath("/api/draft"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

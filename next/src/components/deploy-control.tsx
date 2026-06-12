@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { withBasePath } from "@/lib/base-path";
 import { useDeploy } from "@/lib/use-deploy";
 import { useT } from "@/lib/i18n";
 import {
@@ -58,7 +59,7 @@ export function DeployControl({
 
   useEffect(() => {
     let cancelled = false;
-    fetch("/api/deploy/config?provider=vercel")
+    fetch(withBasePath("/api/deploy/config?provider=vercel"))
       .then((r) => r.json())
       .then((d: { configured?: boolean }) => {
         if (!cancelled) setConfigured(!!d?.configured);

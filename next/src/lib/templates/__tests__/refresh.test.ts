@@ -19,15 +19,19 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 let templates: typeof import("../index");
 let fetchCalls: string[];
+const ORIGINAL_BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH;
 
 beforeEach(async () => {
   vi.resetModules();
+  delete process.env.NEXT_PUBLIC_BASE_PATH;
   templates = await import("../index");
   fetchCalls = [];
 });
 
 afterEach(() => {
   vi.restoreAllMocks();
+  if (ORIGINAL_BASE_PATH === undefined) delete process.env.NEXT_PUBLIC_BASE_PATH;
+  else process.env.NEXT_PUBLIC_BASE_PATH = ORIGINAL_BASE_PATH;
 });
 
 function stubTemplates(items: Array<{ id: string }>): void {
@@ -167,5 +171,21 @@ describe("refreshTemplates", () => {
     stubTemplates([{ id: "back" }]);
     await templates.refreshTemplates();
     expect(templates.getCachedTemplate("back")?.id).toBe("back");
+  });
+
+  it("prefixes template API requests with NEXT_PUBLIC_BASE_PATH", async () => {
+    process.env.NEXT_PUBLIC_BASE_PATH = "/lq-codeserver01/proxy/3000/";
+    vi.resetModules();
+    templates = await import("../index");
+    fetchCalls = [];
+    stubTemplates([{ id: "a" }]);
+
+    await templates.refreshTemplates();
+    await templates.fetchTemplateExample("folder/skill");
+
+    expect(fetchCalls).toEqual([
+      "/lq-codeserver01/proxy/3000/api/templates",
+      "/lq-codeserver01/proxy/3000/api/templates/folder%2Fskill/example",
+    ]);
   });
 });

@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { withBasePath } from "@/lib/base-path";
 import { useStore } from "@/lib/store";
 import { useT } from "@/lib/i18n";
 import {
@@ -193,7 +194,7 @@ function SampleCard({
   const t = useT();
   const locale = useStore((s) => s.locale);
   const example = tpl.example;
-  const previewUrl = `/api/templates/${encodeURIComponent(tpl.id)}/preview`;
+  const previewUrl = withBasePath(`/api/templates/${encodeURIComponent(tpl.id)}/preview`);
   return (
     <div
       className="group relative flex flex-col overflow-hidden rounded-2xl transition-all hover:-translate-y-0.5"

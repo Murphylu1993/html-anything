@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useState } from "react";
+import { withBasePath } from "./base-path";
 import { useStore, type DeploymentRecord, type DeploymentStatus } from "./store";
 
 /**
@@ -65,7 +66,7 @@ export function useDeploy() {
       setError(null);
       setLatest(null);
       try {
-        const res = await fetch("/api/deploy", {
+        const res = await fetch(withBasePath("/api/deploy"), {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ taskId, provider, html }),

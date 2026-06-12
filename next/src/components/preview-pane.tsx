@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { withBasePath } from "@/lib/base-path";
 import { useStore, selectActiveTask, type LogEntry, type RunStats } from "@/lib/store";
 import { useT, type DictKey } from "@/lib/i18n";
 import { previewHtml, extractHtml } from "@/lib/extract-html";
@@ -64,7 +65,7 @@ export function PreviewPane({
     }
     if (!templateId) return;
     let cancelled = false;
-    fetch(`/api/templates/${encodeURIComponent(templateId)}/example`)
+    fetch(withBasePath(`/api/templates/${encodeURIComponent(templateId)}/example`))
       .then((r) => (r.ok ? r.json() : null))
       .then((data) => {
         if (cancelled) return;

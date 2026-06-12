@@ -8,6 +8,7 @@ import {
   type AgentInfo,
   type Locale,
 } from "@/lib/store";
+import { withBasePath } from "@/lib/base-path";
 import { useT, type DictKey } from "@/lib/i18n";
 import { refreshTemplates } from "@/lib/templates";
 
@@ -167,7 +168,7 @@ function AgentSection() {
     setLoading(true);
     setErr(null);
     try {
-      const res = await fetch("/api/agents", { cache: "no-store" });
+      const res = await fetch(withBasePath("/api/agents"), { cache: "no-store" });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = (await res.json()) as { agents: AgentInfo[] };
       setAgents(data.agents);
@@ -593,7 +594,7 @@ function VercelDeployConfig() {
 
   const load = async () => {
     try {
-      const res = await fetch("/api/deploy/config?provider=vercel");
+      const res = await fetch(withBasePath("/api/deploy/config?provider=vercel"));
       if (!res.ok) return;
       const data = await res.json();
       setConfigured(!!data.configured);
@@ -616,7 +617,7 @@ function VercelDeployConfig() {
     setLoading(true);
     setErr(null);
     try {
-      const res = await fetch("/api/deploy/config?provider=vercel", {
+      const res = await fetch(withBasePath("/api/deploy/config?provider=vercel"), {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ token: token.trim(), teamSlug: teamSlug.trim() }),
@@ -640,7 +641,7 @@ function VercelDeployConfig() {
     setLoading(true);
     setErr(null);
     try {
-      const res = await fetch("/api/deploy/config?provider=vercel", {
+      const res = await fetch(withBasePath("/api/deploy/config?provider=vercel"), {
         method: "DELETE",
       });
       const data = await res.json().catch(() => ({}));
@@ -787,7 +788,7 @@ function MarketplaceSection() {
     setLoading(true);
     setErr(null);
     try {
-      const res = await fetch("/api/marketplace", { cache: "no-store" });
+      const res = await fetch(withBasePath("/api/marketplace"), { cache: "no-store" });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = (await res.json()) as { packages: InstalledPackage[] };
       setPackages(data.packages);
@@ -809,7 +810,7 @@ function MarketplaceSection() {
     setErr(null);
     setInfo(null);
     try {
-      const res = await fetch("/api/marketplace/install", {
+      const res = await fetch(withBasePath("/api/marketplace/install"), {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({ source: spec }),
@@ -846,7 +847,7 @@ function MarketplaceSection() {
     setErr(null);
     setInfo(null);
     try {
-      const res = await fetch(`/api/marketplace/packages/${encodeURIComponent(id)}`, {
+      const res = await fetch(withBasePath(`/api/marketplace/packages/${encodeURIComponent(id)}`), {
         method: "DELETE",
       });
       if (!res.ok) {

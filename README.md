@@ -168,6 +168,19 @@ Open the browser → the top bar auto-detects whichever coding-agent CLI you alr
 
 **No API key required.** We reuse the session you already have logged in (Claude / Cursor / Codex / Gemini / Copilot subscriptions all work).
 
+### Reverse-proxy subpath
+
+If you're serving the app behind a reverse proxy that exposes a subpath like
+`https://ssp.prod.boscharena.ai/lq-codeserver01/proxy/3000/` **and strips that prefix before forwarding to the Next server**, set `NEXT_PUBLIC_BASE_PATH` to the stripped prefix **without** a trailing slash:
+
+```bash
+NEXT_PUBLIC_BASE_PATH=/lq-codeserver01/proxy/3000 pnpm -F @html-anything/next dev
+NEXT_PUBLIC_BASE_PATH=/lq-codeserver01/proxy/3000 pnpm -F @html-anything/next build
+NEXT_PUBLIC_BASE_PATH=/lq-codeserver01/proxy/3000 pnpm -F @html-anything/next start
+```
+
+This repo intentionally uses `assetPrefix` for `/_next/...` assets plus client-side request prefixing for `/api/...`; it does **not** use Next's `basePath` for this deployment shape because the proxy removes the prefix before the upstream app sees the request.
+
 ## Workspace
 
 This repo is a small pnpm workspace:
