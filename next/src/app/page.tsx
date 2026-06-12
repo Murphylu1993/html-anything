@@ -9,6 +9,7 @@ import { HistoryPane } from "@/components/history-pane";
 import { WelcomeModal } from "@/components/welcome-modal";
 import { SettingsModal, type SectionId } from "@/components/settings-modal";
 import { ConvertChip } from "@/components/convert-chip";
+import { withBasePath } from "@/lib/base-path";
 import { useStore, type AgentInfo } from "@/lib/store";
 
 export default function Home() {
@@ -40,7 +41,7 @@ export default function Home() {
     let cancelled = false;
     (async () => {
       try {
-        const res = await fetch("/api/agents", { cache: "no-store" });
+        const res = await fetch(withBasePath("/api/agents"), { cache: "no-store" });
         if (!res.ok) return;
         const data = (await res.json()) as { agents: AgentInfo[] };
         if (!cancelled) setAgents(data.agents);

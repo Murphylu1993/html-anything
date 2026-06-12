@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { withBasePath } from "@/lib/base-path";
 import { useStore, type AgentInfo } from "@/lib/store";
 import { useT, type DictKey } from "@/lib/i18n";
 
@@ -102,7 +103,7 @@ export function WelcomeModal({ onClose }: Props) {
     setLoading(true);
     setErr(null);
     try {
-      const res = await fetch("/api/agents", { cache: "no-store" });
+      const res = await fetch(withBasePath("/api/agents"), { cache: "no-store" });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = (await res.json()) as { agents: AgentInfo[] };
       setAgents(data.agents);

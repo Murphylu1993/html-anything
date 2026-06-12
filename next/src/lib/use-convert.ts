@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback } from "react";
+import { withBasePath } from "./base-path";
 import { useStore } from "./store";
 import { summarizeForAgent } from "./parsers/auto";
 
@@ -98,7 +99,7 @@ export function useConvert() {
       });
 
       try {
-        const res = await fetch("/api/convert", {
+        const res = await fetch(withBasePath("/api/convert"), {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload),

@@ -12,6 +12,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { withBasePath } from "@/lib/base-path";
 import type { SkillMeta as ServerSkillMeta, SkillExampleMeta } from "./loader";
 
 export type TemplateDef = ServerSkillMeta;
@@ -39,7 +40,7 @@ async function fetchTemplates(): Promise<TemplateDef[]> {
   if (inflight) return inflight;
   const myGeneration = ++generation;
   const myPromise: Promise<TemplateDef[]> = (async () => {
-    const res = await fetch("/api/templates");
+    const res = await fetch(withBasePath("/api/templates"));
     if (!res.ok) throw new Error(`GET /api/templates → ${res.status}`);
     const json = (await res.json()) as { templates: TemplateDef[] };
     if (myGeneration !== generation) {
@@ -118,7 +119,7 @@ export async function fetchTemplateExample(id: string): Promise<{
   content: string;
   html: string;
 } | null> {
-  const res = await fetch(`/api/templates/${encodeURIComponent(id)}/example`);
+  const res = await fetch(withBasePath(`/api/templates/${encodeURIComponent(id)}/example`));
   if (!res.ok) return null;
   return res.json();
 }
